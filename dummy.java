@@ -51,3 +51,51 @@ public class Main {
         apiService.sendPostRequest(url, jsonPayload);
     }
 }
+
+
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class PostRequestExample {
+
+    public static void main(String[] args) {
+        try {
+            // URL of the service you want to POST to
+            URL url = new URL("https://example.com/api/resource");
+
+            // Open a connection to the URL
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            // Set the request method to POST
+            connection.setRequestMethod("POST");
+
+            // Set the request content-type
+            connection.setRequestProperty("Content-Type", "application/json; utf-8");
+
+            // Enable input/output streams
+            connection.setDoOutput(true);
+
+            // JSON data to be sent in the request body
+            String jsonInputString = "{\"name\":\"John\", \"age\":30}";
+
+            // Write the JSON data to the output stream
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            // Check the response code
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            // Optionally, read the response body (not shown here)
+
+            // Close the connection
+            connection.disconnect();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
